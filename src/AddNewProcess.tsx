@@ -1,9 +1,8 @@
-import {Modal, Button, Input} from 'antd';
+import {Button, Input, Modal} from 'antd';
 import React, {ChangeEvent, useState} from 'react';
 import {v1} from 'uuid';
 import {useDispatch} from 'react-redux';
 import {addProcess} from './bll/processReducer';
-import {addJob} from './bll/jobReducer';
 
 
 export const Add = () => {
@@ -15,7 +14,6 @@ export const Add = () => {
 
     const onChangeTitle = (e: ChangeEvent<HTMLInputElement>) => {
         setTitle(e.currentTarget.value)
-        // console.log(e.currentTarget.value)
     }
 
     const newId = () => {
@@ -31,8 +29,6 @@ export const Add = () => {
         setVisible(false)
         let newProcessId = newId()
         dispatch(addProcess(title,newProcessId))
-        dispatch(addJob(title,newProcessId))
-        console.log(newProcessId)
     };
 
     const handleCancel = () => {

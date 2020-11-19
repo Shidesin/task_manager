@@ -1,8 +1,9 @@
 import React from 'react'
 import {Button, Collapse} from 'antd';
 import {DeleteOutlined} from '@ant-design/icons';
-import {initialStateJobsType} from './bll/jobReducer';
+import {initialStateJobsType, removeTask, statusConst} from './bll/jobReducer';
 import {ButtonMenu} from './ButtonMenu';
+import {useDispatch} from 'react-redux';
 
 const {Panel} = Collapse;
 
@@ -15,26 +16,48 @@ type ProcessType = {
 
 export const Process = (props: ProcessType) => {
 
-
-    const addJob = () => {
-
-    }
-
     const jobs = props.jobs[props.processId]
     console.log(jobs)
 
+    const dispatch = useDispatch();
+
+    const deleteJob = (processId: string, jobId: string) => {
+        dispatch(removeTask(processId, jobId))
+    }
+
+    const statusBar = () => {
+
+        if(jobs.every(job => job.status === statusConst.Successed)){
+            return 'success'
+        }
+        if(jobs.every(job => job.status === statusConst.Failed)){
+            return 'failed'
+        }
+        if (jobs.some(job => job.status === statusConst.Running)){
+            return 'running'
+        }
+
+
+        // for (let i = 0; jobs.length > i; i++){
+        //      jobs[i].status === statusConst.Running
+        // }
+
+    }
+
     return (
         <Collapse bordered={false}>
-            <Panel style={{fontSize: '15px'}} header={props.titleProcess}
+            <Panel style={{fontSize: '15px', fontFamily: 'fantasy'}} header={props.titleProcess}
                    key={props.processId}
-
                    extra={
-                       <ButtonMenu/>
+                       [<span>status:{statusBar()}</span>,
+                           <ButtonMenu processId={props.processId}/>]
                    }
             >
-                <div>{jobs.map(job => <div key={job.id}>
-                    <span style={{fontSize: 'small'}}>{job.name}</span>
+                <div>{jobs.map(job => <div style={{marginTop: '10px', fontFamily: 'sans-serif'}} key={job.id}>
+                    <span style={{fontSize: '15px'}}>{job.name}</span>
+
                     <Button
+                        onClick={() => deleteJob(props.processId, job.id)}
                         size={'small'}
                         icon={<DeleteOutlined/>}
                         type="default" shape={'circle'}

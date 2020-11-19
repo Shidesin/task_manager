@@ -16,9 +16,6 @@ export const ProcessBar = () => {
 
 
 
-
-    const onSearch = (value: string) => console.log(value);
-
     return (
         <Sider
             width={300}
@@ -27,11 +24,11 @@ export const ProcessBar = () => {
                 backgroundColor: 'azure', overflow: 'auto',
                 height: '100vh',
                 position: 'fixed',
+                zIndex: 1,
                 left: 0,
+                marginTop: '65px'
             }}
         >
-            <Search placeholder="input search text" allowClear onSearch={onSearch}/>
-
             {processes.map(item =>
                 <Process
                     key={item.id}
