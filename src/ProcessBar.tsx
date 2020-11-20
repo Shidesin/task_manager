@@ -1,12 +1,11 @@
 import React from 'react'
-import {Input, Layout} from 'antd';
+import {Layout} from 'antd';
 import {Process} from './Process';
 import {useSelector} from 'react-redux';
 import {AppRootStateType} from './bll/store';
 import {initialStateProcessType} from './bll/processReducer';
 import {initialStateJobsType} from './bll/jobReducer';
 
-const {Search} = Input;
 const {Sider} = Layout;
 
 export const ProcessBar = () => {
@@ -36,6 +35,7 @@ export const ProcessBar = () => {
                     processId={item.id}
                     startTime={item.startTime}
                     jobs={jobs}
+                    jobsCount={item.jobsCount}
                 />
             )}
         </Sider>

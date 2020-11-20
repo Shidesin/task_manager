@@ -1,10 +1,11 @@
 import React from 'react';
 import './App.css';
 import 'antd/dist/antd.css';
-import {Layout, Menu} from 'antd';
+import {Layout} from 'antd';
 import {ProcessBar} from './ProcessBar';
 import {Add} from './AddNewProcess';
 import Search from 'antd/es/input/Search';
+import { ContentBox } from './ContentBox';
 
 const {Header, Content} = Layout;
 
@@ -29,7 +30,7 @@ function App() {
                                 minHeight: '100vh',
                             }}
                         >
-                            Content
+                            <ContentBox/>
                         </Content>
                     </Layout>
                 </Layout>

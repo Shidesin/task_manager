@@ -27,39 +27,42 @@ const AddJob = (props: { processId: string }) => {
         setTitle('')
     };
 
-    const handleOk = () => {
+    const handleOk = (e: any) => {
         setVisible(false)
         let newJobId = newId()
-        dispatch(addJob(title, newJobId, props.processId))
+        dispatch(addJob(title, newJobId, props.processId));
+        e.stopPropagation()
     };
 
-    const handleCancel = () => {
+    const handleCancel = (e: any) => {
         setVisible(false)
-
+        e.stopPropagation()
     };
 
     return (
         <>
-            <Button shape={'circle'} type="primary" onClick={showModal} icon={<FileAddOutlined/>}/>
+            <Button key={props.processId} shape={'circle'} type="primary" onClick={showModal} icon={<FileAddOutlined/>}/>
             <Modal
+                key={props.processId}
+                zIndex={3}
                 title="Create new job"
                 visible={visible}
                 onOk={handleOk}
                 onCancel={handleCancel}
             >
-                <Input autoFocus={true} placeholder="Input title new job..." value={title} onChange={onChangeTitle}/>
+                <Input key={props.processId} onClick={e => e.stopPropagation()} autoFocus={true} placeholder="Input title new job..." value={title} onChange={onChangeTitle}/>
             </Modal>
         </>
     )
 }
 
 const menu = (processId: string, deleteCallback: (processId: string) => void) =>
-    <Menu>
-        <Menu.Item>
-            <AddJob processId={processId}/>
+    <Menu key={processId}>
+        <Menu.Item key={processId}>
+            <AddJob key={processId} processId={processId}/>
         </Menu.Item>
-        <Menu.Item>
-            <Button shape={'circle'} type="primary" onClick={(e) => {
+        <Menu.Item key={processId}>
+            <Button key={processId} shape={'circle'} type="primary" onClick={(e) => {
                 e.stopPropagation()
                 deleteCallback(processId)
             }
@@ -77,8 +80,8 @@ export const ButtonMenu = (props: { processId: string }) => {
     }
 
     return (
-        <Dropdown overlay={menu(props.processId, deleteCallback)}>
-            <Button shape={'circle'} type={'default'} disabled={true} onClick={e => e.stopPropagation()}
+        <Dropdown key={props.processId} overlay={menu(props.processId, deleteCallback)}>
+            <Button key={props.processId} shape={'circle'} type={'default'} disabled={true} onClick={e => e.stopPropagation()}
                     icon={<SettingOutlined/>}/>
         </Dropdown>
     )

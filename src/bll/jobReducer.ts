@@ -22,7 +22,7 @@ let initialState: initialStateJobsType = {
 }
 
 type ActionType =
-    | ReturnType<typeof addJob>
+    | addJobType
     | ReturnType<typeof removeTask>
     | addProcessType
     | deleteProcessType
@@ -48,9 +48,11 @@ export const addJob = (title: string, jobId: string, processId: string) => ({
     type: 'ADD_JOB',
     title,
     jobId,
-    processId
+    processId,
 } as const)
 
 
 export const removeTask = (processId: string, jobId: string) =>
     ({type: 'REMOVE-TASK', processId, jobId} as const)
+
+export  type addJobType = ReturnType<typeof addJob>

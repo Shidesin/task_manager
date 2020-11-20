@@ -1,9 +1,10 @@
-import React from 'react'
+import React, {useCallback} from 'react'
 import {Button, Collapse} from 'antd';
 import {DeleteOutlined} from '@ant-design/icons';
 import {initialStateJobsType, removeTask, statusConst} from './bll/jobReducer';
 import {ButtonMenu} from './ButtonMenu';
 import {useDispatch} from 'react-redux';
+import {updateCount} from './bll/processReducer';
 
 const {Panel} = Collapse;
 
@@ -11,15 +12,24 @@ type ProcessType = {
     titleProcess: string
     jobs: initialStateJobsType
     processId: string
-    startTime: Date
+    startTime: string
+    jobsCount: number
 }
 
-export const Process = (props: ProcessType) => {
-
-    const jobs = props.jobs[props.processId]
-    console.log(jobs)
+export const Process = React.memo((props: ProcessType) => {
+    console.log('render Process')
 
     const dispatch = useDispatch();
+
+    const jobs = props.jobs[props.processId]
+
+    const jobCount = jobs.length
+
+    const changeCountsJob = useCallback((processId: string, jobCount: number) => {
+        dispatch(updateCount(processId, jobCount))
+    }, [dispatch])
+
+    changeCountsJob(props.processId, jobCount)
 
     const deleteJob = (processId: string, jobId: string) => {
         dispatch(removeTask(processId, jobId))
@@ -27,46 +37,44 @@ export const Process = (props: ProcessType) => {
 
     const statusBar = () => {
 
-        if(jobs.every(job => job.status === statusConst.Successed)){
+        if (jobs.every(job => job.status === statusConst.Successed)) {
             return 'success'
         }
-        if(jobs.every(job => job.status === statusConst.Failed)){
+        if (jobs.every(job => job.status === statusConst.Failed)) {
             return 'failed'
         }
-        if (jobs.some(job => job.status === statusConst.Running)){
+        if (jobs.some(job => job.status === statusConst.Running)) {
             return 'running'
         }
-
-
-        // for (let i = 0; jobs.length > i; i++){
-        //      jobs[i].status === statusConst.Running
-        // }
-
     }
 
     return (
-        <Collapse bordered={false}>
-            <Panel style={{fontSize: '15px', fontFamily: 'fantasy'}} header={props.titleProcess}
-                   key={props.processId}
-                   extra={
-                       [<span>status:{statusBar()}</span>,
-                           <ButtonMenu processId={props.processId}/>]
-                   }
+        <Collapse key={props.processId} bordered={false}>
+            <Panel
+                style={{fontSize: '15px', fontFamily: 'fantasy'}}
+                header={props.titleProcess}
+                key={props.processId}
+                extra={
+                    [<span key={props.processId}>status:{statusBar()}</span>,
+                        <ButtonMenu key={props.processId} processId={props.processId}/>]
+                }
             >
-                <div>{jobs.map(job => <div style={{marginTop: '10px', fontFamily: 'sans-serif'}} key={job.id}>
-                    <span style={{fontSize: '15px'}}>{job.name}</span>
+                <div key={props.processId}>
+                    {jobs.map(job => <div style={{marginTop: '10px', fontFamily: 'sans-serif'}} key={props.processId}>
+                        <span key={props.processId} style={{fontSize: '15px'}}>{job.name}</span>
 
-                    <Button
-                        onClick={() => deleteJob(props.processId, job.id)}
-                        size={'small'}
-                        icon={<DeleteOutlined/>}
-                        type="default" shape={'circle'}
-                        style={{position: 'absolute', right: '5px'}}
-                    />
-                </div>)}
+                        <Button
+                            key={props.processId}
+                            onClick={() => deleteJob(props.processId, job.id)}
+                            size={'small'}
+                            icon={<DeleteOutlined/>}
+                            type="default" shape={'circle'}
+                            style={{position: 'absolute', right: '5px'}}
+                        />
+                    </div>)}
 
                 </div>
             </Panel>
         </Collapse>
     )
-}
+})
