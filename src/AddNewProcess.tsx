@@ -5,7 +5,7 @@ import {useDispatch} from 'react-redux';
 import {addProcess} from './bll/processReducer';
 
 
-export const Add = () => {
+export const AddNewProcess = () => {
 
     const [visible,setVisible]= useState<boolean>(false)
     const[title, setTitle] =useState<string>('')

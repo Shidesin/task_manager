@@ -8,22 +8,22 @@ export type jobType = {
 }
 
 export enum statusConst {
-    Running = 'running',
-    Successed = 'successed',
-    Failed = 'failed'
+    Running = 'Running',
+    Successed = 'Successed',
+    Failed = 'Failed'
 }
 
 export type initialStateJobsType = { [key: string]: Array<jobType> }
 
 let initialState: initialStateJobsType = {
     [initialStateProcess[0].id]: [
-        {id: '1', name: 'Initial job', processId: initialStateProcess[0].id, status: statusConst.Running}
+        {id: '1', name: 'Initial job', processId: initialStateProcess[0].id, status: statusConst.Failed}
     ]
 }
 
 type ActionType =
     | addJobType
-    | ReturnType<typeof removeTask>
+    | removeTaskType
     | addProcessType
     | deleteProcessType
 
@@ -44,15 +44,17 @@ export const jobReducer = (state = initialState, action: ActionType): initialSta
     }
 }
 
-export const addJob = (title: string, jobId: string, processId: string) => ({
+export const addJob = (title: string, jobId: string, processId: string, jobCountIncrement: number) => ({
     type: 'ADD_JOB',
     title,
     jobId,
     processId,
+    jobCountIncrement
 } as const)
 
 
-export const removeTask = (processId: string, jobId: string) =>
-    ({type: 'REMOVE-TASK', processId, jobId} as const)
+export const removeTask = (processId: string, jobId: string,jobCountDecrement: number ) =>
+    ({type: 'REMOVE-TASK', processId, jobId, jobCountDecrement} as const)
 
 export  type addJobType = ReturnType<typeof addJob>
+export type removeTaskType = ReturnType<typeof removeTask>
