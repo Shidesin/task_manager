@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import './App.css';
 import 'antd/dist/antd.css';
-import {Layout} from 'antd';
+import {Layout, Modal} from 'antd';
 import {ProcessBar} from './ProcessBar';
 import {AddNewProcess} from './AddNewProcess';
 import Search from 'antd/es/input/Search';
@@ -9,22 +9,20 @@ import {ContentBox} from './ContentBox';
 import {useDispatch, useSelector} from 'react-redux';
 import {AppRootStateType} from './bll/store';
 import {initialStateJobsType} from './bll/jobReducer';
-import {deleteProcess, initialStateProcessType} from './bll/processReducer';
+import {deleteProcess, processStateType} from './bll/processReducer';
 
 const {Header, Content} = Layout;
 
 function App() {
     const jobsState = useSelector<AppRootStateType, initialStateJobsType>(state => state.job)
-    const processes = useSelector<AppRootStateType, initialStateProcessType>(state => state.process)
-
+    const processes = useSelector<AppRootStateType, Array<processStateType>>(state => state.process)
 
 
     const dispatch = useDispatch();
 
-    const [currentProcessId,setCurrentProcessId] = useState<string >('Please select process')
-    console.log(currentProcessId)
+    const [currentProcessId, setCurrentProcessId] = useState<string>('Please select process')
 
-    const currentProcessCallback = (processId: string ) => {
+    const currentProcessCallback = (processId: string) => {
         setCurrentProcessId(processId)
         console.log('currentProcessCallback')
     }
@@ -35,22 +33,39 @@ function App() {
         console.log('deleteProcessCallback')
     }
 
-    const searchJob = jobsState
+    const findJob = (stateProcess: processStateType[], stateJobs: initialStateJobsType, jobName: string) => {
+
+        let copyState = Object.values(stateJobs).flatMap(item => item.filter(el => el.name === jobName))
+        let findJobProcessId = copyState[0].processId
+        let nameProcess = stateProcess.filter(item => item.id === findJobProcessId? item.name: '')
+        console.log(nameProcess)
+        Modal.success({
+            content: (
+                <div>
+                    <p>Process name: {nameProcess[0].name}</p>
+                    <p>Job name: {copyState[0].name}</p>
+                    <p>Status: {copyState[0].status}</p>
+                </div>
+            ),
+        });
+        console.log(copyState)
+    }
 
     const onSearch = (value: string) => {
-        console.log(value)
+        findJob(processes, jobsState, value)
     };
 
     return (
         <div className="App">
             <Layout>
-                <Header className="header" style={{position: 'fixed', zIndex: 1, width: '100%'}} >
+                <Header className="header" style={{position: 'fixed', zIndex: 1, width: '100%'}}>
                     <Search style={{width: '300px', marginTop: '16px'}} placeholder=" Search job"
-                            onSearch={onSearch} onBlur={() => console.log('1111111')}/>
+                            onSearch={onSearch}/>
                     <AddNewProcess/>
                 </Header>
                 <Layout>
-                    <ProcessBar processes={processes} deleteCallback={deleteProcessCallback} jobs={jobsState} currentProcessCallback={currentProcessCallback}/>
+                    <ProcessBar processes={processes} deleteCallback={deleteProcessCallback} jobs={jobsState}
+                                currentProcessCallback={currentProcessCallback}/>
                     <Layout style={{padding: '0 24px 24px'}}>
                         <Content
                             className="site-layout-background"
@@ -62,7 +77,8 @@ function App() {
                                 marginLeft: '350px'
                             }}
                         >
-                            <ContentBox processesState={processes} jobsState={jobsState} currentProcessId={currentProcessId}/>
+                            <ContentBox processesState={processes} jobsState={jobsState}
+                                        currentProcessId={currentProcessId}/>
                         </Content>
                     </Layout>
                 </Layout>

@@ -14,7 +14,7 @@ type ContentBoxType = {
 export const ContentBox = (props: ContentBoxType) => {
 
     const processName = props.processesState.filter( obj => obj.id === props.currentProcessId)
-    console.log(processName[0].name)
+    // console.log(processName[0].name)
 
 
     const jobsCurrentProcess = props.currentProcessId === 'Please select process' ? undefined : props.jobsState[props.currentProcessId]

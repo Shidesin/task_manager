@@ -16,7 +16,7 @@ type ProcessType = {
 }
 
 export const Process = React.memo((props: ProcessType) => {
-    console.log('render Process')
+    // console.log('render Process')
 
 
     const jobs = props.jobs[props.processId]
