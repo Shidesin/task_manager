@@ -36,19 +36,25 @@ function App() {
     const findJob = (stateProcess: processStateType[], stateJobs: initialStateJobsType, jobName: string) => {
 
         let copyState = Object.values(stateJobs).flatMap(item => item.filter(el => el.name === jobName))
-        let findJobProcessId = copyState[0].processId
-        let nameProcess = stateProcess.filter(item => item.id === findJobProcessId? item.name: '')
-        console.log(nameProcess)
-        Modal.success({
-            content: (
-                <div>
-                    <p>Process name: {nameProcess[0].name}</p>
-                    <p>Job name: {copyState[0].name}</p>
-                    <p>Status: {copyState[0].status}</p>
-                </div>
-            ),
-        });
-        console.log(copyState)
+
+        if (copyState.length > 0) {
+            let findJobProcessId = copyState[0].processId
+            let nameProcess = stateProcess.filter(item => item.id === findJobProcessId? item.name: '')
+            Modal.success({
+                content: (
+                    <div>
+                        <p>Process name: {nameProcess[0].name}</p>
+                        <p>Job name: {copyState[0].name}</p>
+                        <p>Status: {copyState[0].status}</p>
+                    </div>
+                ),
+            });
+        } else {
+            Modal.error({
+                title: 'Failed search',
+                content: 'Enter the correct title',
+            })
+        }
     }
 
     const onSearch = (value: string) => {
