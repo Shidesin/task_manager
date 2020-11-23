@@ -3,7 +3,7 @@ import {Button, Input, Modal} from 'antd';
 import {FileAddOutlined} from '@ant-design/icons';
 import {useDispatch} from 'react-redux';
 import {v1} from 'uuid';
-import {addJob, randomStatus, statusConst} from './bll/jobReducer';
+import {addJob, randomStatus} from '../../bll/jobReducer';
 
 export const AddJob = (props: { processId: string }) => {
 

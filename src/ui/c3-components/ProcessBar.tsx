@@ -2,9 +2,9 @@ import React, {useState} from 'react'
 import {Button, Layout} from 'antd';
 import {Process} from './Process';
 import {useSelector} from 'react-redux';
-import {AppRootStateType} from './bll/store';
-import {processStateType} from './bll/processReducer';
-import {initialStateJobsType} from './bll/jobReducer';
+import {AppRootStateType} from '../../bll/store';
+import {processStateType} from '../../bll/processReducer';
+import {initialStateJobsType} from '../../bll/jobReducer';
 
 const {Sider} = Layout;
 

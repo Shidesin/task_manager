@@ -1,5 +1,4 @@
 import {addJobType, removeTaskType} from './jobReducer';
-import {restoreState} from './store';
 
 export type processStateType = {
     id: string
@@ -11,7 +10,6 @@ export type processStateType = {
 export type initialStateProcessType = Array<processStateType>
 
 
-// let initialStateProcess = restoreState<initialStateProcessType>('stateProcess',[{id: '1', name: 'Initial Process', startTime: '11.11.2020', jobsCount: 1}])
 
 
 let initialStateProcess: initialStateProcessType = [

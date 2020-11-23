@@ -2,14 +2,14 @@ import React, {useState} from 'react';
 import './App.css';
 import 'antd/dist/antd.css';
 import {Layout, Modal} from 'antd';
-import {ProcessBar} from './ProcessBar';
-import {AddNewProcess} from './AddNewProcess';
 import Search from 'antd/es/input/Search';
-import {ContentBox} from './ContentBox';
 import {useDispatch, useSelector} from 'react-redux';
-import {AppRootStateType, saveState} from './bll/store';
-import {initialStateJobsType} from './bll/jobReducer';
-import {deleteProcess, initialStateProcessType, processStateType} from './bll/processReducer';
+import {AddNewProcess} from '../c2-feature/AddNewProcess';
+import {AppRootStateType, saveState} from '../../bll/store';
+import {ContentBox} from '../c3-components/ContentBox';
+import {initialStateJobsType} from '../../bll/jobReducer';
+import {deleteProcess, initialStateProcessType, processStateType} from '../../bll/processReducer';
+import {ProcessBar} from '../c3-components/ProcessBar';
 
 const {Header, Content} = Layout;
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import {Table} from 'antd';
-import {jobType, statusConst} from './bll/jobReducer';
+import {jobType, statusConst} from '../../bll/jobReducer';
 
 type jodPropsType ={
     jobsCurrentProcess: jobType[] | undefined

@@ -1,7 +1,7 @@
 import React from 'react'
 import {Button, Collapse} from 'antd';
 import {DeleteOutlined} from '@ant-design/icons';
-import {initialStateJobsType, statusConst} from './bll/jobReducer';
+import {initialStateJobsType, statusConst} from '../../bll/jobReducer';
 
 const {Panel} = Collapse;
 

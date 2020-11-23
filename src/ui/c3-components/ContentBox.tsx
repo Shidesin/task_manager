@@ -1,8 +1,8 @@
 import React from 'react';
-import {initialStateJobsType} from './bll/jobReducer';
-import { AddJob } from './AddJob';
+import {initialStateJobsType} from '../../bll/jobReducer';
+import { AddJob } from '../c2-feature/AddJob';
 import { Job } from './Job';
-import {processStateType} from './bll/processReducer';
+import {processStateType} from '../../bll/processReducer';
 
 
 type ContentBoxType = {
@@ -14,11 +14,8 @@ type ContentBoxType = {
 export const ContentBox = (props: ContentBoxType) => {
 
     const processName = props.processesState.filter( obj => obj.id === props.currentProcessId)
-    // console.log(processName[0].name)
-
 
     const jobsCurrentProcess = props.currentProcessId === 'Please select process' ? undefined : props.jobsState[props.currentProcessId]
-
 
     if (!props.currentProcessId || props.currentProcessId === 'Please select process') {
         return (
