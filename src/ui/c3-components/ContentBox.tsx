@@ -11,7 +11,7 @@ type ContentBoxType = {
     processesState: Array<processStateType>
 }
 
-export const ContentBox = (props: ContentBoxType) => {
+export const ContentBox = React.memo( (props: ContentBoxType) => {
 
     const processName = props.processesState.filter( obj => obj.id === props.currentProcessId)
 
@@ -29,8 +29,10 @@ export const ContentBox = (props: ContentBoxType) => {
             <div style={{position: 'fixed',zIndex: 1,  marginLeft: 20, marginTop: -50}}  key={props.currentProcessId}>
                 <AddJob processId={props.currentProcessId}/>  add new job in to process: {processName[0].name}
             </div>
-            <div style={{marginTop: 50}}><Job currentProcessId={props.currentProcessId} jobsCurrentProcess={jobsCurrentProcess}/></div>
+            <div style={{marginTop: 50}}>
+                <Job currentProcessId={props.currentProcessId} jobsCurrentProcess={jobsCurrentProcess}/>
+            </div>
         </div>
     )
 
-}
+})

@@ -15,7 +15,8 @@ const {Header, Content} = Layout;
 
 
 
-function App() {
+const App = React.memo( () => {
+
 
     const jobsState = useSelector<AppRootStateType, initialStateJobsType>(state => state.job)
     const processes = useSelector<AppRootStateType, initialStateProcessType>(state => state.process);
@@ -28,19 +29,15 @@ function App() {
     }
     saveProcessState()
 
-
-
     const [currentProcessId, setCurrentProcessId] = useState<string>('Please select process')
 
     const currentProcessCallback = (processId: string) => {
         setCurrentProcessId(processId)
-        console.log('currentProcessCallback')
     }
 
     const deleteProcessCallback = (processId: string) => {
         dispatch(deleteProcess(processId))
         setCurrentProcessId('Please select process')
-        console.log('deleteProcessCallback')
     }
 
     const findJob = (stateProcess: processStateType[], stateJobs: initialStateJobsType, jobName: string) => {
@@ -101,6 +98,6 @@ function App() {
             </Layout>
         </div>
     );
-}
+})
 
 export default App;

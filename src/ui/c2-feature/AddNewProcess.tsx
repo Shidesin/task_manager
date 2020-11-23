@@ -6,7 +6,8 @@ import {addProcess} from '../../bll/processReducer';
 import {addJob, randomStatus} from '../../bll/jobReducer';
 
 
-export const AddNewProcess = () => {
+export const AddNewProcess = React.memo( () => {
+
 
     const [visible,setVisible]= useState<boolean>(false)
     const[title, setTitle] =useState<string>('')
@@ -73,4 +74,4 @@ export const AddNewProcess = () => {
             </Modal>
         </>
     );
-}
+})

@@ -7,7 +7,7 @@ type jodPropsType ={
     currentProcessId: string
 }
 
-export const Job = (props: jodPropsType) => {
+export const Job = React.memo( (props: jodPropsType) => {
 
 
     const columns: any = [
@@ -30,8 +30,8 @@ export const Job = (props: jodPropsType) => {
     const data = props.jobsCurrentProcess;
 
     return(
-        <div>
-            <Table columns={columns} dataSource={data}  pagination={false} />
+        <div >
+            <Table  rowKey={obj => obj.id} columns={columns} dataSource={data}  pagination={false} />
         </div>
     )
-}
+})

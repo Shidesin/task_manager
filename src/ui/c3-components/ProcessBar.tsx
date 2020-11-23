@@ -15,7 +15,7 @@ type propsType = {
     processes: Array<processStateType>
 }
 
-export const ProcessBar = (props: propsType) => {
+export const ProcessBar = React.memo( (props: propsType) => {
 
     const processStateArray = useSelector<AppRootStateType, Array<processStateType>>(state => state.process)
 
@@ -52,7 +52,7 @@ export const ProcessBar = (props: propsType) => {
         return [...arrProcess.sort(compareJobsCount)]
     }
 
-    const arr = (processStateArray: Array<processStateType>, click?: string | null) => {
+    const arrSorted = (processStateArray: Array<processStateType>, click?: string | null) => {
         if (click === '') {
             return processStateArray
         }
@@ -89,7 +89,7 @@ export const ProcessBar = (props: propsType) => {
                 <Button onClick={() => setClick('time')} size={'small'}>Sort by time</Button>
             </div>
 
-            {arr(processStateArray, click).map(item =>
+            {arrSorted(processStateArray, click).map(item =>
                 <Process
                     deleteCallback={props.deleteCallback}
                     key={item.id}
@@ -103,4 +103,4 @@ export const ProcessBar = (props: propsType) => {
             )}
         </Sider>
     )
-}
+})

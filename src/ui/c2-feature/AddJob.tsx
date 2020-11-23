@@ -41,16 +41,16 @@ export const AddJob = (props: { processId: string }) => {
 
     return (
         <>
-            <Button key={props.processId} type="primary" onClick={showModal} icon={<FileAddOutlined/>}/>
+            <Button key={`add job ${props.processId} + ${newId}`} type="primary" onClick={showModal} icon={<FileAddOutlined/>}/>
             <Modal
-                key={props.processId}
+                key={`add job modal ${props.processId} ${newId}`}
                 zIndex={3}
                 title="Create new job"
                 visible={visible}
                 onOk={handleOk}
                 onCancel={handleCancel}
             >
-                <Input key={props.processId} onClick={e => e.stopPropagation()} autoFocus={true}
+                <Input key={`${props.processId} + ${newId}`} onClick={e => e.stopPropagation()} autoFocus={true}
                        placeholder="Input title new job..." value={title} onChange={onChangeTitle}/>
             </Modal>
         </>
