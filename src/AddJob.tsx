@@ -3,14 +3,15 @@ import {Button, Input, Modal} from 'antd';
 import {FileAddOutlined} from '@ant-design/icons';
 import {useDispatch} from 'react-redux';
 import {v1} from 'uuid';
-import {addJob} from './bll/jobReducer';
+import {addJob, randomStatus, statusConst} from './bll/jobReducer';
 
 export const AddJob = (props: { processId: string }) => {
 
     const [visible, setVisible] = useState<boolean>(false);
     const [title, setTitle] = useState<string>('')
 
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
+
 
     const onChangeTitle = (e: ChangeEvent<HTMLInputElement>) => {
         setTitle(e.currentTarget.value)
@@ -29,7 +30,7 @@ export const AddJob = (props: { processId: string }) => {
     const handleOk = (e: any) => {
         setVisible(false)
         let newJobId = newId()
-        dispatch(addJob(title, newJobId, props.processId,1));
+        dispatch(addJob(title, newJobId, props.processId, 1, randomStatus()));
         e.stopPropagation()
     };
 
@@ -40,7 +41,7 @@ export const AddJob = (props: { processId: string }) => {
 
     return (
         <>
-            <Button key={props.processId}  type="primary" onClick={showModal} icon={<FileAddOutlined/>}/>
+            <Button key={props.processId} type="primary" onClick={showModal} icon={<FileAddOutlined/>}/>
             <Modal
                 key={props.processId}
                 zIndex={3}
@@ -49,7 +50,8 @@ export const AddJob = (props: { processId: string }) => {
                 onOk={handleOk}
                 onCancel={handleCancel}
             >
-                <Input  key={props.processId} onClick={e => e.stopPropagation()} autoFocus={true} placeholder="Input title new job..." value={title} onChange={onChangeTitle}/>
+                <Input key={props.processId} onClick={e => e.stopPropagation()} autoFocus={true}
+                       placeholder="Input title new job..." value={title} onChange={onChangeTitle}/>
             </Modal>
         </>
     )

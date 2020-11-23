@@ -1,4 +1,5 @@
 import {addJobType, removeTaskType} from './jobReducer';
+import {restoreState} from './store';
 
 export type processStateType = {
     id: string
@@ -10,9 +11,14 @@ export type processStateType = {
 export type initialStateProcessType = Array<processStateType>
 
 
-export let initialStateProcess: initialStateProcessType = [
-    {id: '1', name: 'Initial Process', startTime: new Date().toUTCString(), jobsCount: 1}
-]
+// let initialStateProcess = restoreState<initialStateProcessType>('stateProcess',[{id: '1', name: 'Initial Process', startTime: '11.11.2020', jobsCount: 1}])
+
+
+let initialStateProcess: initialStateProcessType = [
+    {id: '1', name: 'Initial Process', startTime: '11.11.2020', jobsCount: 1}
+];
+
+
 
 type ActionType =
     | addProcessType
@@ -20,7 +26,7 @@ type ActionType =
     | addJobType
     | removeTaskType
 
-export const processReducer = (state = initialStateProcess, action: ActionType): Array<processStateType> => {
+export const processReducer = (state = initialStateProcess, action: ActionType) => {
     switch (action.type) {
         case 'REMOVE-TASK':
             return state.map( obj => obj.id === action.processId ? {...obj, jobsCount: obj.jobsCount - action.jobCountDecrement} : obj)

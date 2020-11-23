@@ -3,6 +3,7 @@ import React, {ChangeEvent, useState} from 'react';
 import {v1} from 'uuid';
 import {useDispatch} from 'react-redux';
 import {addProcess} from './bll/processReducer';
+import {addJob, randomStatus} from './bll/jobReducer';
 
 
 export const AddNewProcess = () => {
@@ -16,7 +17,27 @@ export const AddNewProcess = () => {
         setTitle(e.currentTarget.value)
     }
 
-    const newId = () => {
+    function addRandomJobs(processId: string) {
+
+        function getRandomIntInclusive(min: number, max: number) {
+            min = Math.ceil(min);
+            max = Math.floor(max);
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+
+        const randomNum = getRandomIntInclusive(0, 11);
+
+        function randomCreatejobs(num: number) {
+            for (let i = 1;num > i; i++ ){
+                let title = Math.random().toString(36).substring(7);
+                dispatch(addJob(title, v1(), processId,1, randomStatus()));
+                console.log('create job')
+            }
+        }
+        randomCreatejobs(randomNum)
+    }
+
+    const newId = (): string => {
         return v1()
     }
 
@@ -29,12 +50,16 @@ export const AddNewProcess = () => {
         setVisible(false)
         let newProcessId = newId()
         dispatch(addProcess(title,newProcessId))
+        addRandomJobs(newProcessId)
     };
 
     const handleCancel = () => {
         setVisible(false)
 
     };
+
+
+
 
     return (
         <>

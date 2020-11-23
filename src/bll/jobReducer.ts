@@ -1,4 +1,4 @@
-import {addProcessType, deleteProcessType, initialStateProcess} from './processReducer';
+import {addProcessType, deleteProcessType} from './processReducer';
 
 export type jobType = {
     id: string
@@ -15,9 +15,10 @@ export enum statusConst {
 
 export type initialStateJobsType = { [key: string]: Array<jobType> }
 
+
 let initialState: initialStateJobsType = {
-    [initialStateProcess[0].id]: [
-        {id: '1', name: 'Initial job', processId: initialStateProcess[0].id, status: statusConst.Failed}
+    '1': [
+        {id: '1', name: 'Initial job', processId: '1', status: statusConst.Failed}
     ]
 }
 
@@ -36,7 +37,15 @@ export const jobReducer = (state = initialState, action: ActionType): initialSta
             delete copyState[action.processId]
             return copyState
         case 'ADD_JOB':
-            return {...state, [action.processId]: [{status: statusConst.Running, processId: action.processId, name: action.title, id: action.jobId},...state[action.processId]]}
+            return {
+                ...state,
+                [action.processId]: [{
+                    status: action.status,
+                    processId: action.processId,
+                    name: action.title,
+                    id: action.jobId
+                }, ...state[action.processId]]
+            }
         case 'ADD_PROCESS':
             return {...state, [action.processId]: []}
         default:
@@ -44,17 +53,46 @@ export const jobReducer = (state = initialState, action: ActionType): initialSta
     }
 }
 
-export const addJob = (title: string, jobId: string, processId: string, jobCountIncrement: number) => ({
+export const addJob = (
+    title: string,
+    jobId: string,
+    processId: string,
+    jobCountIncrement: number,
+    status: statusConst.Successed | statusConst.Failed | statusConst.Running
+) => ({
     type: 'ADD_JOB',
     title,
     jobId,
     processId,
-    jobCountIncrement
+    jobCountIncrement,
+    status
 } as const)
 
 
-export const removeTask = (processId: string, jobId: string,jobCountDecrement: number ) =>
+export const removeTask = (processId: string, jobId: string, jobCountDecrement: number) =>
     ({type: 'REMOVE-TASK', processId, jobId, jobCountDecrement} as const)
 
 export  type addJobType = ReturnType<typeof addJob>
 export type removeTaskType = ReturnType<typeof removeTask>
+
+
+export const randomStatus = () => {
+    function getRandomIntInclusive(min: number, max: number) {
+        min = Math.ceil(min);
+        max = Math.floor(max);
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    const randomNum = getRandomIntInclusive(1, 4);
+
+    if (randomNum === 1) {
+        return statusConst.Running
+    }
+    if (randomNum === 2) {
+        return statusConst.Failed
+    }
+    if (randomNum === 3) {
+        return statusConst.Successed
+    }
+    return statusConst.Running
+}

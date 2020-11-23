@@ -7,18 +7,28 @@ import {AddNewProcess} from './AddNewProcess';
 import Search from 'antd/es/input/Search';
 import {ContentBox} from './ContentBox';
 import {useDispatch, useSelector} from 'react-redux';
-import {AppRootStateType} from './bll/store';
+import {AppRootStateType, saveState} from './bll/store';
 import {initialStateJobsType} from './bll/jobReducer';
-import {deleteProcess, processStateType} from './bll/processReducer';
+import {deleteProcess, initialStateProcessType, processStateType} from './bll/processReducer';
 
 const {Header, Content} = Layout;
 
+
+
 function App() {
+
     const jobsState = useSelector<AppRootStateType, initialStateJobsType>(state => state.job)
-    const processes = useSelector<AppRootStateType, Array<processStateType>>(state => state.process)
+    const processes = useSelector<AppRootStateType, initialStateProcessType>(state => state.process);
+
+    const dispatch = useDispatch()
+
+    const saveProcessState = () => {
+        saveState('stateProcess', processes)
+        saveState('stateJobs', jobsState)
+    }
+    saveProcessState()
 
 
-    const dispatch = useDispatch();
 
     const [currentProcessId, setCurrentProcessId] = useState<string>('Please select process')
 
@@ -39,7 +49,7 @@ function App() {
 
         if (copyState.length > 0) {
             let findJobProcessId = copyState[0].processId
-            let nameProcess = stateProcess.filter(item => item.id === findJobProcessId? item.name: '')
+            let nameProcess = stateProcess.filter(item => item.id === findJobProcessId ? item.name : '')
             Modal.success({
                 content: (
                     <div>
